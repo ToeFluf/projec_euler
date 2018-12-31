@@ -21,7 +21,7 @@ class Primes{
         void run();
         void printMenu();
         void printVector();
-        void isPrime();
+        bool isPrime(int input);
         void allPrimesUnderN(int upper);
         void primesToOutFile();
         void sumOfPrimes();
