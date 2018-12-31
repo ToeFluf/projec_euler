@@ -9,6 +9,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <math.h>
 #include "Primes.h"
 using namespace std;
 
@@ -26,7 +27,7 @@ Primes::Primes(std::string filename){
     inFile.open(filename);
     if(inFile.is_open()){
         inFile >> size;
-        for(int i = 1; i <= size; i++){
+        for(int i = 0; i < size; i++){
             inFile >> input;
             primeVector.push_back(input);
         }
@@ -46,10 +47,11 @@ void Primes::printMenu(){
     int choice = 0;
     int input = 0;
 
-    cout << "Select an option:\n1) Check if a number is prime\n2) Print prime numbers\n3) Find the sum of primes in a range\n4) Output all primes to a file\n5) Find all Primes under N\n6) Find n number of primes\n7) Quit\nEnter your choice: ";
+    cout << "Select an option:\n1) Check if a number is prime\n2) Print prime numbers\n3) Find the sum of primes in a range\n";
+    cout << "4) Output all primes to a file\n5) Find all Primes under N\n6) Find n number of primes\n7) Find largst consecutive prime that is primes under N\n8) Quit\nEnter your choice: ";
     cin >> choice;
 
-    while(cin.fail() || choice < 0 || choice > 7){
+    while(cin.fail() || choice < 0 || choice > 8){
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Your input was not an integer, was less than 0, or was greater than 6. Try again: ";
@@ -59,7 +61,23 @@ void Primes::printMenu(){
     cout << endl;
 
     if(choice == 1){
-        Primes::isPrime();
+        int input = 0;
+        cout << "Enter a non-negative integer greater than one to see if it is prime: ";
+        cin >> input;
+
+        while(cin.fail() || input < 2){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Your input was not an integer or was less than 2. Try again: ";
+            cin >> input;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << endl;
+
+        /*if(primeVector.back() < input){
+            allPrimesUnderN(input+1);
+        }*/
+        Primes::isPrime(input);
     }
     else if(choice == 2){
         Primes::printVector();
@@ -119,6 +137,53 @@ void Primes::printMenu(){
         }
         return;*/
     }
+    else if(choice == 7){
+        cout << "What is the ceiling for the largest consecutive prime sum? (must be >= 2):";
+        cin >> input;
+
+        while(cin.fail() || choice < 2){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Your input was not an integer, or was not one or two. Try again: ";
+            cin >> choice;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << endl;
+        int maxCounter = 0;
+        int counter = 0;
+        int change = 0;
+        int sum = 0;
+        int primeSum = 0;
+        int maxSum = 0;
+        int i = 0;
+        int j = 0;
+        int sqrtIn = sqrt(input);
+        Primes::allPrimesUnderN(input);
+        while(primeVector.at(i)<input && primeVector.at(i) < sqrtIn){
+            j = i;
+            sum = 0;
+            counter = 0;
+            change = 1;
+            while(sum < input && counter < sqrtIn){
+                sum += primeVector.at(j);
+                if(Primes::isPrime(sum)&& sum < input){
+                    primeSum = sum;
+                    counter += change;
+                    change = 0;
+                }
+                j++;
+                change++;
+            }
+            if(counter > maxCounter){
+                maxCounter = counter;
+                maxSum = primeSum;
+            }
+            i++;
+        }
+
+        cout << "The largest consecutive prime sum under " << input << " is " << maxSum << " and has " << maxCounter << " terms"<< endl;
+
+    }
     else{
         go = 0;
     }
@@ -126,24 +191,20 @@ void Primes::printMenu(){
     return;
 }
 
-void Primes::isPrime(){
-    int input = 0;
-    cout << "Enter a non-negative integer greater than one to see if it is prime: ";
-    cin >> input;
-
-    while(cin.fail() || input < 2){
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Your input was not an integer or was less than 2. Try again: ";
-        cin >> input;
+bool Primes::isPrime(int input){
+    int i = 0;
+    Primes::allPrimesUnderN(input + 2);
+    while(i < primeVector.size()){
+        if(primeVector.at(i) == input){
+            //cout << input << " is prime" << endl;
+            return true;
+        }
+        else if(primeVector.at(i) > input || i == primeVector.size()-1){
+            //cout << input << " is not prime" << endl;
+            return false;
+        }
+        i++;
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cout << endl;
-
-    if(primeVector.back() < input){
-        allPrimesUnderN(input+1);
-    }
-
 }
 
 void Primes::printVector(){
@@ -229,7 +290,6 @@ void Primes::primesToOutFile(){
 void Primes::allPrimesUnderN(int upper){
     int i = 0;
     int size = primeVector.size();
-    cout << size << endl;
     if(primeVector.at(size-1) == 2){
         i = 3;
     }
