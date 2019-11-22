@@ -10,13 +10,17 @@
 #include <fstream>
 #include <string>
 #include <math.h>
+#include <time.h>
 #include "Primes.h"
 using namespace std;
 
 Primes::Primes(int input){
     go = 1;
     primeVector.push_back(2);
+    t = clock();
     Primes::allPrimesUnderN(input);
+    t = clock() - t;
+    printf("Time to complete: %f seconds.\n",t,((float)t)/CLOCKS_PER_SEC);
 }
 
 Primes::Primes(std::string filename){
@@ -27,10 +31,13 @@ Primes::Primes(std::string filename){
     inFile.open(filename);
     if(inFile.is_open()){
         inFile >> size;
+        t = clock();
         for(int i = 0; i < size; i++){
             inFile >> input;
             primeVector.push_back(input);
         }
+        t = clock() - t;
+        printf("Time to complete: %f seconds.\n",t,((float)t)/CLOCKS_PER_SEC);
     }
     else{
         cout << "File could not be opened, exiting" << endl;
@@ -77,7 +84,10 @@ void Primes::printMenu(){
         /*if(primeVector.back() < input){
             allPrimesUnderN(input+1);
         }*/
-        Primes::isPrime(input);
+        t = clock();
+        Primes::isPrime(input,1);
+        t = clock() - t;
+        printf("Time to complete: %f seconds.\n",t,((float)t)/CLOCKS_PER_SEC);
     }
     else if(choice == 2){
         Primes::printVector();
@@ -97,7 +107,10 @@ void Primes::printMenu(){
 
     }
     else if(choice == 4){
+        t = clock();
         Primes::primesToOutFile();
+        t = clock() - t;
+        printf("Time to complete: %f seconds.\n",t,((float)t)/CLOCKS_PER_SEC);
     }
     else if(choice == 5){
         cout << "What is the integer you want to find the primes under (>= 2): ";
@@ -111,7 +124,10 @@ void Primes::printMenu(){
         }
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << endl;
+        t = clock();
         Primes::allPrimesUnderN(input);
+        t = clock() - t;
+        printf("Time to complete: %f seconds.\n",t,((float)t)/CLOCKS_PER_SEC);
     }
     else if(choice == 6){
     /*    int i = 0;
@@ -138,51 +154,10 @@ void Primes::printMenu(){
         return;*/
     }
     else if(choice == 7){
-        cout << "What is the ceiling for the largest consecutive prime sum? (must be >= 2):";
-        cin >> input;
-
-        while(cin.fail() || choice < 2){
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Your input was not an integer, or was not one or two. Try again: ";
-            cin >> choice;
-        }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << endl;
-        int maxCounter = 0;
-        int counter = 0;
-        int change = 0;
-        int sum = 0;
-        int primeSum = 0;
-        int maxSum = 0;
-        int i = 0;
-        int j = 0;
-        int sqrtIn = sqrt(input);
-        Primes::allPrimesUnderN(input);
-        while(primeVector.at(i)<input && primeVector.at(i) < sqrtIn){
-            j = i;
-            sum = 0;
-            counter = 0;
-            change = 1;
-            while(sum < input && counter < sqrtIn){
-                sum += primeVector.at(j);
-                if(Primes::isPrime(sum)&& sum < input){
-                    primeSum = sum;
-                    counter += change;
-                    change = 0;
-                }
-                j++;
-                change++;
-            }
-            if(counter > maxCounter){
-                maxCounter = counter;
-                maxSum = primeSum;
-            }
-            i++;
-        }
-
-        cout << "The largest consecutive prime sum under " << input << " is " << maxSum << " and has " << maxCounter << " terms"<< endl;
-
+        t = clock();
+        Primes::largestConsecutivePrimesUnderN();
+        t = clock() - t;
+        printf("Time to complete: %f seconds.\n",t,((float)t)/CLOCKS_PER_SEC);
     }
     else{
         go = 0;
@@ -191,16 +166,20 @@ void Primes::printMenu(){
     return;
 }
 
-bool Primes::isPrime(int input){
+bool Primes::isPrime(int input, bool output = 0){
     int i = 0;
     Primes::allPrimesUnderN(input + 2);
     while(i < primeVector.size()){
         if(primeVector.at(i) == input){
-            //cout << input << " is prime" << endl;
+            if(output){
+                cout << input << " is prime" << endl;
+            }
             return true;
         }
         else if(primeVector.at(i) > input || i == primeVector.size()-1){
-            //cout << input << " is not prime" << endl;
+            if(output){
+                cout << input << " is not prime" << endl;
+            }
             return false;
         }
         i++;
@@ -357,6 +336,59 @@ void Primes::sumOfPrimes(){
         }
         cout << "The sum of primes under " << input << " is " << sum << endl;
     }
+    return;
+}
+
+void Primes::largestConsecutivePrimesUnderN(){
+    int input = 0;
+    int choice;
+    int maxCounter = 0;
+    int counter = 0;
+    int change = 0;
+    int sum = 0;
+    int primeSum = 0;
+    int maxSum = 0;
+    int i = 0;
+    int j = 0;
+
+    cout << "What is the ceiling for the largest consecutive prime sum? (must be >= 2):";
+    cin >> input;
+
+    while(cin.fail() || choice < 2){
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Your input was not an integer, or was not one or two. Try again: ";
+        cin >> choice;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << endl;
+
+    int sqrtIn = sqrt(input);
+    Primes::allPrimesUnderN(input);
+    while(primeVector.at(i)<input && primeVector.at(i) < sqrtIn){
+        j = i;
+        sum = 0;
+        counter = 0;
+        change = 1;
+        while(sum < input && counter < sqrtIn){
+            sum += primeVector.at(j);
+            if(Primes::isPrime(sum,0)&& sum < input){
+                primeSum = sum;
+                counter += change;
+                change = 0;
+            }
+            j++;
+            change++;
+        }
+        if(counter > maxCounter){
+            maxCounter = counter;
+            maxSum = primeSum;
+        }
+        i++;
+    }
+
+    cout << "The largest consecutive prime sum under " << input << " is " << maxSum << " and has " << maxCounter << " terms"<< endl;
+
 }
 
 void Primes::run(){
