@@ -9,11 +9,13 @@
 #define PRIMES_H
 #include <vector>
 #include <string>
+#include <time.h>
 
 class Primes{
     private:
         bool go;
         std::vector<int> primeVector;
+        clock_t t;
     public:
         Primes(int input);
         Primes(std::string filename);
@@ -21,8 +23,9 @@ class Primes{
         void run();
         void printMenu();
         void printVector();
-        bool isPrime(int input);
+        bool isPrime(int input, bool output);
         void allPrimesUnderN(int upper);
+        void largestConsecutivePrimesUnderN();
         void primesToOutFile();
         void sumOfPrimes();
 };
