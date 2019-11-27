@@ -25,4 +25,4 @@ reverseInt x | x < 0     = 0 - (read . reverse . tail . show $ x)
              | otherwise = read . reverse . show $ x
 
 largestPalofNDigit :: Int -> Int
-largestPalofNDigit n = maxT (generateDivisors (10^n) ((10^n) - 1) (makePalList [(floor ((9)*10^((2*n)-1)))..((10^(2*n))-1)]) [])
+largestPalofNDigit n = maxT (generateDivisors (10^n) ((10^n) - 1) (makePalList [(floor ((9)*10^((2*n)-1)))..(((10^(2*n))-1)-1)]) [])
