@@ -15,33 +15,33 @@ int** gen2d_arr(int n){
         arr[i] = new int[n];
         for(int j = 0; j < n; j++){
             arr[i][j] = rand() % 1000;
-            cout << arr[i][j] << '\t';
+            //cout << arr[i][j] << '\t';
         }
-        cout << endl;
+        //cout << endl;
     }
     return arr;
 }
 
 void test(){
     int** arr = nullptr;
-
-    for(int m = 3; m < 25; m++){
+    int m = 300;
+    //for(int m = 3; m < 25; m++){
         arr = gen2d_arr(m);
         Djikstra_matrix* dm = new Djikstra_matrix(arr, m);
 
         cout << endl << "Time start" << endl;
     	time_t start = std::clock();
 
-    	cout << dm->min_top_l_to_bot_r() << endl;
+    	cout << dm->min_pt1_to_pt2(0,0,m - 1, m - 1) << endl;
 
-    	cout << "Time elapsed: " << (( std::clock() - start ) / (double) CLOCKS_PER_SEC);
+    	cout << "Time elapsed: " << (( std::clock() - start ) / (double) CLOCKS_PER_SEC) << endl;
 
         delete dm;
         for(int i = 0; i < m; i++){
             delete[] arr[i];
         }
         delete[] arr;
-    }
+    //}
 }
 
 int main(){

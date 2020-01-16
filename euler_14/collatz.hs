@@ -7,7 +7,7 @@ import Data.Bits
 
 collatz :: Int -> Int
 collatz 1 = 1
-collatz n   | 1 == ((.&.) n (setBit zeroBits 0)) = 1 + (collatz (3 * n + 1))
+collatz n   | odd n = 1 + (collatz (3 * n + 1))
             | otherwise = 1 + (collatz (n `div` 2))
 
 genPrimes :: [Int] -> [Int]

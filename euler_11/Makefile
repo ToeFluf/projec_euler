@@ -6,3 +6,6 @@ main.o: main.cpp
 
 clean:
 	rm *.o euler11
+
+clean_bin:
+	rm *.o
