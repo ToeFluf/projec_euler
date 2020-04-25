@@ -201,10 +201,12 @@ void Djikstra_matrix::reset_state(){
     for (vector<vector<int>>::iterator it = pred.begin() ; it != pred.end(); ++it){
         (*it).clear();
     }
+
     for(int i = 0; i < dist_size; i++){
         dist[i] = INT_MAX;
         seen[i] = false;
     }
+    
     flags[0] = false;
     flags[1] = false;
     cur_row = -1;
