@@ -1,6 +1,6 @@
 // Filename: main.cpp
 // Author: ToeFluf
-// Description: Euler project 5. Find the largest number evenly divisible within a range 0 to n.
+// Description: Euler project 5. Find the largest number evenly divisible by all integers within a range 1 to n.
 
 #include <iostream>
 using namespace std;

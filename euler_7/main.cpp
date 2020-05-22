@@ -31,9 +31,11 @@ int main(){
         i += 2;
     }
 
-    for(int j = 0; j < searchNumber; j++){
+    /*for(int j = 0; j < searchNumber; j++){
         cout << primeArray[j] << endl;
-    }
+    }*/
+
+    cout << primeArray[searchNumber - 1] <<endl;
 
     delete[] primeArray;
 

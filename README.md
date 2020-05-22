@@ -4,7 +4,7 @@
 This repository contains all for my code for any attempt at a Project Euler challenge.
 The Master branch contains all of my completed challenges and the Development branch contains all attempts, completed or not.
 
-The information for a given challenge can be found at the [Project Euler Archives](https://projecteuler.net/archives) page. The URL for a given challenge follows the format : https://projecteuler.net/problem=N where N is the problem number.
+The information for a given challenge can be found at the (Project Euler Archives)[https://projecteuler.net/archives] page. The URL for a given challenge follows the format : https://projecteuler.net/problem=N where N is the problem number.
 
 I do not have the best documentation, so I am sorry if some of the code gets confusing. I am working to refactor a lot of my code for readability.
 
@@ -20,6 +20,6 @@ I usually have the exact solution to a problem written in the top of the file be
 
 To run a C++ Program, change to the correct directory and run `make` and then just run the compiled program. EX: `./euler_1`
 
-For C++ I use the gcc compiler and C++ 17. For Haskell I use the Stack package manage with the most updated GHCI interpreter. Download information can be found at [haskellstack.org](haskellstack.org).
+For C++ I use the gcc compiler and C++ 17. For Haskell I use the Stack package manage with the most updated GHCI interpreter. Download information can be found at (haskellstack.org)[haskellstack.org].
 
 To run a Haskell Program, change to the correct directory and run `stack ghci --name of file--`. This will load the file into the interpreter so you can use it.

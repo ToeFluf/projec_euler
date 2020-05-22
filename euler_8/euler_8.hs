@@ -1,4 +1,11 @@
 
+main = do   putStrLn "Enter number filename:"
+            name <- getLine
+            read_in <- readFile name
+            putStrLn "Hpw many adjacent values would you like to multiply together? "
+            num <- getLine
+            print $ findLargestAdjProd (read num) (read_in)
+
 removeWhiteSpace :: String -> String
 removeWhiteSpace [] = []
 removeWhiteSpace xs = filter (\ x -> x /= ' ' && x /= '\t' && x /= '\n') xs
