@@ -95,11 +95,3 @@ gen_prime_list x = take m $ sieve_aroth [2..n]
     where
         m = ceiling $ logBase (fromIntegral 3) (fromIntegral x)
         n = (+) 1 ((floor $ sqrt $ fromIntegral x) :: Int)
-
---matchVals = liftA2 (\ p2 (p1,m)-> if p1 == p2 then m else 0)
-{-
-factorPairNum :: Int -> [Int] ->
-factorPairNum _ [] = []
-factorPairNum x xs = -}
-
--- [Maybe Int] -> Maybe [Int] sequence $ factorization x $ drop 1 gen_prime_list x
