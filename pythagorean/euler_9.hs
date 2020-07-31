@@ -42,24 +42,25 @@ if a is odd and b is odd, then c is even => but since (a + b) is even and c is e
 
 THEREFOR: the input constaint m, in a + b + c = m, must be even.
 -}
-
+module PythagoreanConstraint (pythag_constraint_solns) where
 import System.Environment
 
 main :: IO ()
 main = do
     args <- getArgs
     let m = read (args !! 0) :: Int
-    let upper = if odd m then error "Cannot have an odd constraint" else (-) (div m 2) 1
+    let upper = if odd m then error "Cannot have an odd constraint" else (div m 2) - 1
     --putStrLn $ show $ upper
-    let solnList = checkList $ testVal m upper
+    let solnList = checkList $ pythag_constraint_solns m upper
     putStrLn $ "Solution list: \n" ++ (show solnList)
     putStrLn $ "Product list: \n" ++ (show $ getProduct solnList)
     return ()
 
-testVal :: Int -> Int -> [(Int, Int, Int)]
-testVal m' b| skip t        = testVal m' (b - 1)
+--takes the constraint val and an upper bound || use (-) (div m 2) 1
+pythag_constraint_solns :: Int -> Int -> [(Int, Int, Int)]
+pythag_constraint_solns m' b| skip t        = pythag_constraint_solns m' (b - 1)
             | a_bigger_b t  = []
-            | otherwise     = t : (testVal m' (b - 1))
+            | otherwise     = t : (pythag_constraint_solns m' (b - 1))
             where
                 skip x = case x of
                     (0,0,0) -> True
